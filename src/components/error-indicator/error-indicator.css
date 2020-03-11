@@ -1,0 +1,10 @@
+.oopssError {
+    font-size: 12px;
+    color: rgba(37, 76, 148, 0.787);
+    margin: 0 auto;
+    text-align: center;
+}
+
+.oopssError span {
+    display: block;
+}
