@@ -26,6 +26,7 @@ const updateCartItem = (item = {}, book) => {
 };
 
 const reducer = (state = initialState, action) => {
+  console.log(action.type);
   switch (action.type) {
     case "FETCH_BOOKS_REQUEST":
       return { ...state, loading: true, hasError: null };
@@ -36,7 +37,7 @@ const reducer = (state = initialState, action) => {
     case "FETCH_BOOKS_FAILURE":
       return { ...state, hasError: action.payload, loading: false };
 
-    case "BOOK_ADDED_TO_CART":
+    case "BOOK_ADDED_TO_CART": {
       const { books, cartItems } = state;
       const bookId = action.payload;
       const book = books.find(({ id }) => id === bookId);
@@ -48,6 +49,21 @@ const reducer = (state = initialState, action) => {
         ...state,
         cartItems: updateCartItems(cartItems, newItem, itemIdx)
       };
+    }
+
+    case "BOOK_DELETED_FROM_CART": {
+      const { cartItems } = state;
+      const bookId = action.payload;
+      const itemIdx = cartItems.findIndex(item => item.id === bookId);
+
+      return {
+        ...state,
+        cartItems: [
+          ...cartItems.slice(0, itemIdx),
+          ...cartItems.slice(itemIdx + 1)
+        ]
+      };
+    }
 
     default:
       return state;
