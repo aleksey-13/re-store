@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 import { withBookStoreService } from "../hoc";
-import { fetchBook, bookAddedToCart } from "../../actions";
+import { fetchBooks, bookAddedToCart } from "../../actions";
 import { compose } from "../../utils";
 import BookListItem from "../book-list-item";
 import Spinner from "../spinner";
@@ -24,9 +25,9 @@ const BookList = ({ books, onAddedToCart }) => (
 );
 
 const BookListContainer = props => {
-  const { books, loading, hasError, fetchBook, onAddedToCart } = props;
+  const { books, loading, hasError, fetchBooks, onAddedToCart } = props;
 
-  useEffect(() => fetchBook(), [fetchBook]);
+  useEffect(() => fetchBooks(), [fetchBooks]);
 
   if (loading) {
     return <Spinner />;
@@ -46,10 +47,13 @@ const mapStateToProps = ({ bookList: { books, loading, hasError } }) => ({
 });
 
 const mapDispatchToProps = (dispatch, { bookStoreService }) => {
-  return {
-    fetchBook: fetchBook(bookStoreService, dispatch),
-    onAddedToCart: id => dispatch(bookAddedToCart(id))
-  };
+  return bindActionCreators(
+    {
+      fetchBooks: fetchBooks(bookStoreService),
+      onAddedToCart: bookAddedToCart
+    },
+    dispatch
+  );
 };
 
 export default compose(
