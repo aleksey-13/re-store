@@ -39,7 +39,7 @@ const BookListContainer = props => {
   return <BookList books={books} onAddedToCart={onAddedToCart} />;
 };
 
-const mapStateToProps = ({ books, loading, hasError }) => ({
+const mapStateToProps = ({ bookList: { books, loading, hasError } }) => ({
   books,
   loading,
   hasError
